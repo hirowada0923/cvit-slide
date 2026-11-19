@@ -101,15 +101,7 @@ python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 ```
 
-### 4. 動作確認
-デモ用データが含まれている状態（または Step 0 で動画を配置・正規化した後）で、以下を実行して PPTX が生成されることを確認できます（詳細は [`DEMO_SCENARIO.md`](DEMO_SCENARIO.md) を参照してください）。
-
-```bash
-.venv/bin/python scripts/02_extract_stills.py
-.venv/bin/python scripts/03_build_slides.py
-```
-
-`dist/CVIT_Presentation_USB/presentation.pptx` が生成され、PowerPoint で正常に開ければセットアップ完了です。
+これで環境構築は完了です（利用イメージや進行例は [`DEMO_SCENARIO.md`](DEMO_SCENARIO.md) もあわせてご参照ください）。
 
 ---
 
@@ -153,14 +145,13 @@ template:
 
 ---
 
-## デモデータのリセット方法
+## 別の症例を新しく作成する場合（前回データのクリア）
 
-デモ用データを消去して新しい本番症例を開始する場合は、以下のコマンドを実行してください。
+1つの症例発表を作成したあと、別の症例で最初からやり直したい場合は、以下のコマンドで前回の動画・中間ファイル・出力をリセットできます（スクリプトやテンプレート設定はそのまま残ります）。
 
 ```bash
 rm -rf raw_inputs/raw_videos/* raw_inputs/frame_previews/* \
        assets/videos_normalized/* assets/figures/* \
        dist/CVIT_Presentation_USB/* \
-       raw_inputs/notes.md raw_inputs/extracted_pptx_summary.json \
-       assets/video_manifest.json slides/deck.yaml
+       raw_inputs/notes.md assets/video_manifest.json slides/deck.yaml
 ```
