@@ -1,0 +1,29 @@
+# Build outputs
+/dist/
+
+# Python environment & cache
+.venv/
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Raw/normalized patient media & generated figures (keep directory structure via .gitkeep)
+raw_inputs/raw_videos/*
+!raw_inputs/raw_videos/.gitkeep
+raw_inputs/frame_previews/*
+!raw_inputs/frame_previews/.gitkeep
+raw_inputs/extracted_pptx_summary.json
+raw_inputs/notes.md
+
+assets/videos_normalized/*
+!assets/videos_normalized/.gitkeep
+assets/figures/*
+!assets/figures/.gitkeep
+assets/video_manifest.json
+
+slides/deck.yaml
+
+# Local PPTX templates
+templates/*.pptx

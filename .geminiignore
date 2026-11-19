@@ -1,0 +1,15 @@
+# Patient privacy & binary media protection
+# Prevent AI from reading raw/normalized videos, DICOMs, and frame preview images
+
+raw_inputs/raw_videos/
+raw_inputs/frame_previews/
+assets/videos_normalized/
+dist/
+
+*.avi
+*.mov
+*.mp4
+*.wmv
+*.mkv
+*.mpg
+*.dcm

@@ -1,0 +1,24 @@
+presentation:
+  title_ja: "演題名（日本語）：例）高度石灰化病変に対し血管内石灰化破砕術と薬剤溶出性ステント留置を施行した1例"
+  title_en: "English Title: e.g., A Case of Severely Calcified Coronary Lesion Treated with Intravascular Lithotripsy and Drug-Eluting Stent"
+  presenter: "演者氏名（例：循環器 太郎）"
+  affiliation: "所属機関名（例：〇〇大学医学部附属病院 循環器内科）"
+  conference: "第〇回 日本心血管インターベンション治療学会（CVIT）"
+
+template:
+  # 使用するPPTXテンプレートのパス（例: "templates/my_template.pptx"。空欄でデフォルト白紙デザイン）
+  path: ""
+  # blank_layout_index: 11  # 省略時は BLANK / 白紙 レイアウトを自動選択
+  draw_header_bar: true     # テンプレート側のヘッダー背景を活かす場合は false に設定
+
+coi:
+  slide_title: "利益相反（COI）開示"
+  statement_ja: |
+    演題発表に関し、筆頭演者および共同演者に開示すべき
+    利益相反（COI）はありません。
+  # 開示事項がある場合は以下のように記載を変更してください：
+  # statement_ja: |
+  #   演題発表に関し、開示すべき利益相反（COI）は以下の通りです。
+  #   ・顧問料：〇〇株式会社
+  #   ・講演料：△△株式会社
+  note: "※日本心血管インターベンション治療学会（CVIT）の利益相反開示基準に基づき記載"
