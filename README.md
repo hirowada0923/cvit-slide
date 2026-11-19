@@ -74,32 +74,33 @@ cd cvit-slide
 
 プロジェクトを開くと、ルートにある [`AGENTS.md`](AGENTS.md)（個人情報保護・実行ルール）と [`.geminiignore`](.geminiignore)（動画・画像の読み込み制限）が自動で有効になります。
 
-> **※以降のコマンド実行について**
-> Antigravity 内のターミナル（または Mac 標準のターミナル）で `cvit-slide` フォルダにいる状態で実行してください。
+### 2. 前提ツール（ffmpeg / Python 3）と Python 仮想環境のセットアップ（チャットで完結）
 
-### 2. 前提ツールのインストール（Homebrew / Python 3 / ffmpeg）
-`ffmpeg` と `python3` がインストールされているか確認します。未インストールの場合は Homebrew で導入してください。
+フォルダを開いたら、**Antigravity のチャット** で次のように依頼するだけで、環境確認からパッケージ導入まで自動実行できます（ターミナル操作は不要です）。
 
-```bash
-# Homebrew が未導入の場合（必要な場合のみ）
-# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+> 「Mac の環境構築（`ffmpeg` / `python3` の確認・導入と、`.venv` 仮想環境への `requirements.txt` インストール）を実行してください」
 
-# ffmpeg と python3 のインストール
-brew install ffmpeg python3
+<details>
+<summary>手動でターミナルからセットアップする場合のコマンド</summary>
 
-# バージョン確認
-python3 --version
-ffmpeg -version | head -n 1
-```
+1. **前提ツールのインストール（Homebrew / Python 3 / ffmpeg）**
+   ```bash
+   # Homebrew が未導入の場合（必要な場合のみ）
+   # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-### 3. Python 仮想環境の作成とパッケージインストール
-プロジェクトルートで仮想環境（`.venv`）を作成し、依存パッケージをインストールします。
+   brew install ffmpeg python3
+   python3 --version
+   ffmpeg -version | head -n 1
+   ```
 
-```bash
-python3 -m venv .venv
-.venv/bin/pip install --upgrade pip
-.venv/bin/pip install -r requirements.txt
-```
+2. **Python 仮想環境の作成とパッケージインストール**
+   ```bash
+   python3 -m venv .venv
+   .venv/bin/pip install --upgrade pip
+   .venv/bin/pip install -r requirements.txt
+   ```
+
+</details>
 
 これで環境構築は完了です（利用イメージや進行例は [`DEMO_SCENARIO.md`](DEMO_SCENARIO.md) もあわせてご参照ください）。
 
