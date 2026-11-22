@@ -1,5 +1,6 @@
 # Build outputs
 /dist/
+/demo_package/
 
 # Python environment & cache
 .venv/
