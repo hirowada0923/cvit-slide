@@ -11,8 +11,8 @@ description: CVIT（日本心血管インターベンション治療学会）症
 - 患者氏名、ID、生年月日、具体的な手術日などの個人特定情報（PII）は質問・記録・スライド生成のいずれにも含めないこと。
 - ユーザーから「動画を入れたので進めて」「正規化して」「スライドを作成して」とチャットで依頼された場合は、`.venv/bin/python scripts/01_normalize_videos.py`、`02_extract_stills.py`、`03_build_slides.py` をAIが直接実行して完結させること（ユーザーに手動のターミナル操作を求めない）。
 
-## 2. 医師への構造化ヒアリング（4項目）
-`assets/video_manifest.json` に登録されている動画一覧（`video_id`, `original_name`, `duration_sec`）を医師に提示し、以下の4点を簡潔に質問する：
+## 2. 医師への構造化ヒアリング（4項目＋演題・COI確認）
+`assets/video_manifest.json` および `project.yaml` を読み込んだ上で、登録されている動画一覧（`video_id`, `original_name`, `duration_sec`）を医師に提示し、以下の点を簡潔に質問する：
 
 1. **検出された動画（VID_01〜）の内容と使用デバイス・手技の流れ**
    - 各動画がどのフェーズ（例：術前CAG、IVUS/OCT、バルーン拡張/Rotablator/IVL、最終造影など）か、使用した主要デバイス名（サイズ・種類）を確認する。
@@ -22,9 +22,13 @@ description: CVIT（日本心血管インターベンション治療学会）症
    - 本症例で最も伝えたい工夫・教訓・新規性（1〜2文）。
 4. **患者背景・術前検査・術後経過（個人特定情報なし）**
    - 年代・性別、主訴・既往歴、術前検査所見（心電図・心エコー・採血等）、術後経過・転帰。
+5. **演題名・基本情報の確認（`project.yaml` 参照）**
+   - 演題名（日本語・英語）の案または希望を確認する。
+   - 演者・所属・学会名・COI文言については、現在の `project.yaml` の設定値を提示して「変更があるか（未設定の `例：` が残っていれば入力希望があるか）」のみ簡潔に確認する（ユーザーが手動で正確な値を設定済みの場合はそのまま活かす）。
 
 ## 3. メタデータとノートの更新
 医師からの回答を受け取ったら、以下を更新・作成する：
+- `project.yaml`: 演題名や変更希望があった基本情報（演者・所属・COI等）を更新（変更不要な項目は維持）。
 - `raw_inputs/notes.md`: 回答内容を整理した症例メモ（PII除外）。
 - `assets/video_manifest.json`: 各動画の `clinical_label`（例: `"Pre-PCI CAG (LAO cranial)"`）と `selected_stills`（例: `[{"timestamp_sec": 2.5, "output_fig": "fig_vid01_2_5s.png", "caption": "高度狭窄部"}]`）を更新。
 

@@ -8,7 +8,8 @@ presentation:
 template:
   # 使用するPPTXテンプレートのパス（例: "templates/my_template.pptx"。空欄でデフォルト白紙デザイン）
   path: ""
-  # blank_layout_index: 11  # 省略時は BLANK / 白紙 レイアウトを自動選択
+  # title_layout_index: 0   # 省略時は Title Slide / 表紙 レイアウトを自動選択
+  # blank_layout_index: 6   # 省略時は BLANK / 白紙 レイアウトを自動選択
   draw_header_bar: true     # テンプレート側のヘッダー背景を活かす場合は false に設定
 
 coi:

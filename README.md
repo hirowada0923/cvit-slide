@@ -116,9 +116,10 @@ cd cvit-slide
      > 「`raw_inputs/raw_videos/` に動画を入れたので、正規化してヒアリングを始めてください」
    - AI が内部で `01_normalize_videos.py` を実行し、動画の変換・1秒毎プレビュー生成・`assets/video_manifest.json` 作成を行います。
 1. **AIによるヒアリング**
-   - AI が検出された動画一覧を提示し、4項目（動画内容・切り出し秒数・Take-home message・患者背景/経過）を質問します。
+   - AI が検出された動画一覧を提示し、4項目（動画内容・切り出し秒数・Take-home message・患者背景/経過）に加えて、**演題名（日英）** と [`project.yaml`](project.yaml) の基本情報（演者・所属・学会名・COI）に変更があるかを確認します。
 2. **メタデータ・演題情報更新**
-   - チャットで回答を伝えると、AI が `raw_inputs/notes.md` と `assets/video_manifest.json` を更新します（演題名や演者・所属は [`project.yaml`](project.yaml) を編集するかチャットで指示してください）。
+   - チャットで回答を伝えると、AI が `raw_inputs/notes.md`・`assets/video_manifest.json`・（必要に応じ）[`project.yaml`](project.yaml) を更新します。
+   - 演者・所属・COI などはあらかじめ [`project.yaml`](project.yaml) にご自身の正しい情報を記入しておけば、以降はそのまま流用されます。
 3. **スライド設計（`slides/deck.yaml`）**
    - AI が全8〜9枚の `slides/deck.yaml`（発表時間配分付き日本語スピーカーノート含む）を生成します。
 4. **静止画抽出 ＆ 5. PPTX・USBパッケージ生成**
@@ -138,10 +139,15 @@ cd cvit-slide
 template:
   # templates/ フォルダに .pptx を配置してパスを指定（空欄にすると標準の白紙デザインを使用）
   path: "templates/my_template.pptx"
-  # テンプレート側の背景・ロゴ・ヘッダーをそのまま活かす場合は false に設定
-  draw_header_bar: true
+  # テンプレート側の表紙・本文デザインをそのまま活かす場合は false に設定
+  draw_header_bar: false
+  # 必要に応じてレイアウト番号を明示指定（省略時は自動選択）
+  # title_layout_index: 0
+  # blank_layout_index: 6
 ```
 
+- **2レイアウト構成（表紙＋本文）**: テンプレートからは **表紙用（`Title Slide` 等）** と **本文用（`Blank` / `白紙` 等）** の2つのレイアウトのみを使用します。テンプレート側のプレースホルダー配置に依存しないため、医局・病院のテンプレートをそのまま流用しやすい設計です。
+- **表紙の自動保護**: テンプレートに専用の表紙レイアウトが無い場合でも、表紙には本文用ヘッダー帯が重ならないよう自動でカバー背景を描画します。
 - テンプレート内の既存スライドはビルド時に自動削除され、スライドサイズに合わせてレイアウト・フォント・動画サイズが自動スケーリングされます。
 
 ---

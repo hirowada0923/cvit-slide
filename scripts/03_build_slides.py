@@ -76,13 +76,26 @@ def clear_existing_slides(prs: Presentation) -> None:
 
 
 def select_blank_layout(prs: Presentation, layout_index: int | None = None):
-    """テンプレートから白紙（または最小プレースホルダー）レイアウトを選択する。"""
+    """テンプレートから本文用の白紙（または最小プレースホルダー）レイアウトを選択する。"""
     if layout_index is not None and 0 <= layout_index < len(prs.slide_layouts):
         return prs.slide_layouts[layout_index]
     for lay in prs.slide_layouts:
         if lay.name.strip().lower() in {"blank", "白紙"}:
             return lay
     return min(prs.slide_layouts, key=lambda l: len(l.placeholders))
+
+
+def select_title_layout(prs: Presentation, blank_layout, layout_index: int | None = None):
+    """テンプレートから表紙用レイアウトを選択する。未指定時は非プレースホルダー図形を持つ表紙レイアウトを優先する。"""
+    if layout_index is not None and 0 <= layout_index < len(prs.slide_layouts):
+        return prs.slide_layouts[layout_index], True
+    for lay in prs.slide_layouts:
+        if lay is blank_layout:
+            continue
+        non_ph = [s for s in lay.shapes if not s.is_placeholder]
+        if non_ph and lay.name.strip().lower() in {"title slide", "title", "表紙", "タイトル スライド"}:
+            return lay, True
+    return blank_layout, False
 
 
 def remove_empty_placeholders(slide) -> None:
@@ -363,9 +376,9 @@ def add_movie_to_slide(
     return movie_shape.shape_id
 
 
-def build_title_slide(slide, project: dict, slide_cfg: dict) -> None:
+def build_title_slide(slide, project: dict, slide_cfg: dict, has_dedicated_title_layout: bool = False) -> None:
     pres = project.get("presentation", {})
-    if DRAW_HEADER_BAR:
+    if DRAW_HEADER_BAR or not has_dedicated_title_layout:
         bg = slide.shapes.add_shape(
             MSO_SHAPE.RECTANGLE, sx(0), sy(0), sx(13.333), sy(7.5)
         )
@@ -596,11 +609,16 @@ def main() -> int:
         prs = Presentation(str(tpl_path))
         clear_existing_slides(prs)
         blank_layout = select_blank_layout(prs, tpl_cfg.get("blank_layout_index"))
+        title_layout, has_dedicated_title_layout = select_title_layout(
+            prs, blank_layout, tpl_cfg.get("title_layout_index")
+        )
     else:
         prs = Presentation()
         prs.slide_width = Inches(BASE_W_IN)
         prs.slide_height = Inches(BASE_H_IN)
         blank_layout = prs.slide_layouts[6]
+        title_layout = blank_layout
+        has_dedicated_title_layout = False
 
     SCALE_X = prs.slide_width.inches / BASE_W_IN
     SCALE_Y = prs.slide_height.inches / BASE_H_IN
@@ -612,12 +630,13 @@ def main() -> int:
     with tempfile.TemporaryDirectory() as tmp_str:
         tmp_dir = Path(tmp_str)
         for idx, slide_cfg in enumerate(slides_cfg, start=1):
-            slide = prs.slides.add_slide(blank_layout)
-            remove_empty_placeholders(slide)
             layout = slide_cfg.get("layout", "content")
+            chosen_layout = title_layout if layout == "title" else blank_layout
+            slide = prs.slides.add_slide(chosen_layout)
+            remove_empty_placeholders(slide)
 
             if layout == "title":
-                build_title_slide(slide, project, slide_cfg)
+                build_title_slide(slide, project, slide_cfg, has_dedicated_title_layout)
             elif layout == "coi":
                 build_coi_slide(slide, project, slide_cfg)
                 add_footer(slide, idx, total_pages)
